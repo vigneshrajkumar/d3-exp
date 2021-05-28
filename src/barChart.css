@@ -17,7 +17,12 @@ body {
     fill: #137B80
 }
 
+.mark:hover {
+    fill: #e6842a
+}
+
 .axis-label {
     font-size: 1.5em;
     fill: #635F5D
 }
+
