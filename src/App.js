@@ -1,9 +1,12 @@
-import BarChart from './components/BarChart'
+// import BarChart from './components/BarChart'
+import ScatterPlot from './components/ScatterPlot';
 
 function App() {
     return (
-        <BarChart />
+        // <BarChart />
+        <ScatterPlot />
     )
 }
 
 export default App;
+
