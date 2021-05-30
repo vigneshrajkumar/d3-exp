@@ -21,8 +21,25 @@ body {
     fill: #e6842a
 }
 
-.axis-label {
+.axis-label, .dropdown-label{
     font-size: 1.5em;
-    fill: #635F5D
+    fill: #635F5D;
+    color: #635F5D;
 }
 
+.dropdown-label{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+
+.Dropdown-root{
+    width: 300px;
+    display: inline-block;
+}
+
+.menus-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
