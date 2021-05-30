@@ -1,5 +1,5 @@
 import { useScatterPlotData } from './../hooks/useScatterPlotData'
-import { scaleLinear, extent } from 'd3'
+import { scaleLinear, extent, scaleOrdinal } from 'd3'
 import { useState } from 'react'
 import Dropdown from 'react-dropdown'
 
@@ -10,7 +10,7 @@ const dataURL = 'https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/
 
 const width = 960;
 const height = 500;
-const margin = { top: 20, bottom: 50, left: 80, right: 20 };
+const margin = { top: 20, bottom: 50, left: 80, right: 150 };
 const innerHeight = height - margin.top - margin.bottom;
 const innerWidth = width - margin.left - margin.right;
 
@@ -35,7 +35,12 @@ function ScatterPlot() {
     const yAxisLabel = options.filter(op => op.value === yAttribute)[0].label;
     const yAxisLabelOffset = -40;
 
+    const colorValue = d => d.species
 
+    const [hoveredValue, setHoveredValue] = useState(null);
+    const onHover = (dv) => {
+        setHoveredValue(dv)
+    }
     const data = useScatterPlotData(dataURL)
 
     if (!data) {
@@ -44,17 +49,23 @@ function ScatterPlot() {
         )
     }
 
+    const filteredData = data.filter(d => hoveredValue == colorValue(d))
+
     // extent gives min and max of the given value range
     // nice gives space between starting value of tick and axis
     const xScale = scaleLinear()
         .domain(extent(data, xValue))
         .range([0, innerWidth])
-        .nice()
+        .nice();
 
     const yScale = scaleLinear()
         .domain(extent(data, yValue))
         .range([0, innerHeight])
-        .nice()
+        .nice();
+
+    const colorScale = scaleOrdinal()
+        .domain(data.map(colorValue))
+        .range(['#e6842a', '#137b80', '#8e6c8a']);
 
     return (
         <>
@@ -102,14 +113,39 @@ function ScatterPlot() {
                         transform={`translate(${yAxisLabelOffset}, ${innerHeight / 2}) rotate(-90)`}
                     >{yAxisLabel}</text>
 
+                    <g opacity={hoveredValue ? 0.2 : 1}>
+                        {data.map((d) => (
+                            <circle className="mark"
+                                fill={colorScale(colorValue(d))}
+                                r={7}
+                                cx={xScale(xValue(d))}
+                                cy={yScale(yValue(d))}>
+                                <title>{xValue(d)}</title>
+                            </circle>))}
+                    </g>
 
-                    {data.map((d) => (
+
+                    {filteredData.map((d) => (
                         <circle className="mark"
+                            fill={colorScale(colorValue(d))}
                             r={7}
                             cx={xScale(xValue(d))}
                             cy={yScale(yValue(d))}>
                             <title>{xValue(d)}</title>
                         </circle>))}
+
+
+                    <g transform={`translate(${innerWidth + 50})`} >
+                        {colorScale.domain().map((dv, i) => (
+                            <g transform={`translate(0, ${i * 50})`}
+                                onMouseEnter={() => onHover(dv)}
+                                onMouseOut={() => { onHover(null) }}
+                                opacity={hoveredValue && dv !== hoveredValue ? 0.5 : 1}>
+                                <circle fill={colorScale(dv)} r={7} />
+                                <text x={15} dy=".32em">{dv}</text>
+                            </g>
+                        ))}
+                    </g>
 
                 </g>
 

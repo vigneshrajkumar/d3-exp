@@ -10,15 +10,7 @@ body {
 }
 
 .tick text {
-    fill: #635F5D
-}
-
-.mark {
-    fill: #137B80
-}
-
-.mark:hover {
-    fill: #e6842a
+    fill: #635F5D;
 }
 
 .axis-label, .dropdown-label{
