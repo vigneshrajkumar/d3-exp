@@ -1,21 +1,23 @@
 import { geoGraticule, geoNaturalEarth1, geoPath } from "d3-geo";
+import { useCities } from "../hooks/useCities";
 import { useWorldMap } from "../hooks/useWorldMap"
 
 import './../world-map.css'
 
-const dataURL = 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json'
+const atlasURL = 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json'
 
+const citiesURL = 'https://gist.githubusercontent.com/curran/13d30e855d48cdd6f22acdf0afe27286/raw/0635f14817ec634833bb904a47594cc2f5f9dbf8/worldcities_clean.csv';
 
 function WorldMap() {
 
-    const data = useWorldMap(dataURL);
+    const atlasData = useWorldMap(atlasURL);
+    const citiesData = useCities(citiesURL);
 
-    if (!data) {
+    if (!atlasData || !citiesData) {
         return (
             <div>loading...</div>
         )
     }
-    console.log(data);
 
     const width = 960;
     const height = 500;
@@ -23,6 +25,7 @@ function WorldMap() {
     const projection = geoNaturalEarth1();
     const path = geoPath(projection);
     const graticule = geoGraticule();
+   
 
     return (
         <svg height={height} width={width} style={{ border: "2px dashed orange" }}>
@@ -32,11 +35,16 @@ function WorldMap() {
                 
                 <path className="graticules" d={path(graticule())} />
 
-                {data.countries.features.map(feature => (
+                {atlasData.countries.features.map(feature => (
                     <path className="country" d={path(feature)} />
                 ))}
 
-                <path className="interiors" d={path(data.interiors)} />
+                <path className="interiors" d={path(atlasData.interiors)} />
+
+                {citiesData.map(cit => {
+                    const [x, y] = projection([cit.lng, cit.lat]);
+                    return <circle cx={x} cy={y} r={1.5}/>
+                })}
 
             </g>
         </svg>
