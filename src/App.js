@@ -12,8 +12,8 @@ function App() {
         // <BarChart />
         // <ScatterPlot />
         // <LineChart />
-        // <WorldMap />
-        <ChennaiMap />
+        <WorldMap />
+        // <ChennaiMap />
      
     )
 };

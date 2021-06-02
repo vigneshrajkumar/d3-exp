@@ -7,6 +7,7 @@ export function useCities(dataURL) {
     const tras = d => {
         d.lat = +d.lat
         d.lng = +d.lng
+        d.population = +d.population
         return d
     }
 

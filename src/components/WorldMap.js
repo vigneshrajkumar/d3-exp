@@ -1,4 +1,5 @@
 import { geoGraticule, geoNaturalEarth1, geoPath } from "d3-geo";
+import {scaleSqrt, max} from 'd3';
 import { useCities } from "../hooks/useCities";
 import { useWorldMap } from "../hooks/useWorldMap"
 
@@ -25,6 +26,13 @@ function WorldMap() {
     const projection = geoNaturalEarth1();
     const path = geoPath(projection);
     const graticule = geoGraticule();
+
+    const sizeValue = d => d.population;
+    const maxRadius = 20;
+    
+    const sizeScale = scaleSqrt()
+        .domain([0, max(citiesData, sizeValue)])
+        .range([0, maxRadius]);
    
 
     return (
@@ -43,7 +51,7 @@ function WorldMap() {
 
                 {citiesData.map(cit => {
                     const [x, y] = projection([cit.lng, cit.lat]);
-                    return <circle cx={x} cy={y} r={1.5}/>
+                    return <circle trans cx={x} cy={y} r={sizeScale(sizeValue(cit))}/>
                 })}
 
             </g>
