@@ -7,6 +7,7 @@ const dataURL = 'https://gist.githubusercontent.com/curran/a9656d711a8ad31d812b8
 export function useMigrantsData() {
     const [data, setData] = useState(null)
     const transform = d => {
+        d.loc = d['Location Coordinates'].split(',').map(d => +d).reverse();
         d['Reported Date'] = new Date(d['Reported Date']);
         d['Total Dead and Missing'] = +d['Total Dead and Missing'];
         return d;

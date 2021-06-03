@@ -3,8 +3,8 @@
 // import LineChart from './components/LineChart';
 // import WorldMap from './components/WorldMap';
 // import ChennaiMap from './components/ChennaiMap'
-
-import MissingMigrantsHistogram from './components/MissingMigrantsHistogram'
+import MigrantsMap from './components/MigrantsMap'
+// import MissingMigrantsHistogram from './components/MissingMigrantsHistogram'
 
 
 
@@ -15,7 +15,8 @@ function App() {
         // <ScatterPlot />
         // <LineChart />
         // <WorldMap />
-        <MissingMigrantsHistogram />
+        // <MissingMigrantsHistogram />
+        <MigrantsMap/>
         // <ChennaiMap />
      
     )
