@@ -2,34 +2,41 @@ import { geoGraticule, geoNaturalEarth1, geoPath } from "d3-geo";
 import { scaleSqrt, max } from 'd3';
 
 import './../migrant-map.css'
+import { useMemo } from "react";
 
-function MigrantsMap({migrantsData, atlasData}) {
+const sizeValue = d => d['Total Dead and Missing'];
+const maxRadius = 20;
+
+function MigrantsMap({ migrantsData, filteredData, atlasData }) {
 
     const projection = geoNaturalEarth1();
     const path = geoPath(projection);
     const graticule = geoGraticule();
 
-    const sizeValue = d => d['Total Dead and Missing'];
-    const maxRadius = 20;
-
-    const sizeScale = scaleSqrt()
-        .domain([0, max(migrantsData, sizeValue)])
-        .range([0, maxRadius]);
-
+    const sizeScale = useMemo(
+        () => scaleSqrt()
+            .domain([0, max(migrantsData, sizeValue)])
+            .range([0, maxRadius]),
+        [migrantsData, sizeValue, maxRadius]
+    );
 
     return (
         <g >
-            <path className="sphere" d={path({ type: 'Sphere' })}> </path>
+            {useMemo(
+                    () =>
+                        <>
+                            <path className="sphere" d={path({ type: 'Sphere' })} />
+                            <path className="graticules" d={path(graticule())} />
 
-            <path className="graticules" d={path(graticule())} />
+                            {atlasData.countries.features.map(feature => (
+                                <path className="country" d={path(feature)} />
+                            ))}
+                            <path className="interiors" d={path(atlasData.interiors)} />
+                        </>,
+                    [path, graticule, atlasData]
+                )}
 
-            {atlasData.countries.features.map(feature => (
-                <path className="country" d={path(feature)} />
-            ))}
-
-            <path className="interiors" d={path(atlasData.interiors)} />
-
-            {migrantsData.map(cit => {
+            {filteredData.map(cit => {
                 const [x, y] = projection(cit.loc);
                 return <circle trans cx={x} cy={y} r={sizeScale(sizeValue(cit))} />
             })}

@@ -32,7 +32,7 @@ function MigrantData() {
 
     return (
         <svg height={height} width={width} style={{ border: "2px dashed orange" }}>
-            <MigrantsMap  migrantsData={filteredData} atlasData={atlasData} />
+            <MigrantsMap  migrantsData={migrantsData} filteredData={filteredData} atlasData={atlasData} />
             <g transform={`translate(0, ${height - (height * dateHistogramSize)})`}>
                 <MigrantsHistogram migrantsData={migrantsData}  height={height * dateHistogramSize} width={width} setBrushExtent={setBrushExtent} xValue={xValue}/>
             </g>
