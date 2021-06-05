@@ -7,22 +7,26 @@ body {
 
 .tick line {
     stroke: #C0C0BB;
+    stroke: #b3b3b3;
+    opacity: 0.3;
 }
 
 .tick text {
-    fill: #635F5D
+	fill: #635F5D;
+	font-size: .6em;
 }
 
 .mark {
     fill: #137B80
 }
 
-.mark:hover {
-    fill: #e6842a
+.hist-bg {
+    fill: #FBFBF9;
+    opacity: 1;
 }
 
 .axis-label {
-    font-size: 1.5em;
+    font-size: .8em;
     fill: #635F5D
 }
 

@@ -3,9 +3,7 @@
 // import LineChart from './components/LineChart';
 // import WorldMap from './components/WorldMap';
 // import ChennaiMap from './components/ChennaiMap'
-import MigrantsMap from './components/MigrantsMap'
-// import MissingMigrantsHistogram from './components/MissingMigrantsHistogram'
-
+import MigrantsData  from './components/MigrantsData';
 
 
 function App() {
@@ -16,8 +14,11 @@ function App() {
         // <LineChart />
         // <WorldMap />
         // <MissingMigrantsHistogram />
-        <MigrantsMap/>
+        // <MigrantsMap/>
+        <MigrantsData />
         // <ChennaiMap />
+
+        // <div>one</div>
      
     )
 };
